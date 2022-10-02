@@ -1,31 +1,21 @@
-// https://bl.ocks.org/heybignick/3faf257bbbbc7743bb72310d03b86ee8
-// https://bl.ocks.org/steveharoz/8c3e2524079a8c440df60c1ab72b5d03
-//
-var svg = d3.select("svg"),
-    width = +svg.attr("width"),
-    height = +svg.attr("height");
+var svg = d3.select("svg")
 
-console.log("width and height:")
-console.log(width)
-console.log(height)
+const width = window.innerWidth
+const height = window.innerHeight
 
-
-
-//document.getElementById("viz_area").style.width
-
-
+const link_length = 50
 
 var color = d3.scaleOrdinal(d3.schemeCategory20);
 
 var simulation = d3.forceSimulation()
     .force("link", d3.forceLink().id(function(d) { return d.id; }))
-    .force("charge", d3.forceManyBody());
-    //.force("center", d3.forceCenter(width / 2, height / 2));
+    .force("charge", d3.forceManyBody())
+    .force("center", d3.forceCenter(width / 2, height / 2));
 
 simulation.force("charge").strength(-150)
 
-
-d3.json("miserables.json", function(error, graph) {
+d3.json("output.json", function(error, graph) {
+//d3.json("miserables.json", function(error, graph) {
   if (error) throw error;
 
   var link = svg.append("g")
@@ -58,6 +48,7 @@ d3.json("miserables.json", function(error, graph) {
 
   drag_handler(node);
   
+  // set the of the text to the top right of the node
   var lables = node.append("text")
       .text(function(d) {
         return d.id;
@@ -65,6 +56,8 @@ d3.json("miserables.json", function(error, graph) {
       .attr('x', 6)
       .attr('y', 3);
 
+  // set the title of the node to be the `id` value 
+  // from the json
   node.append("title")
       .text(function(d) { return d.id; });
 
@@ -73,7 +66,8 @@ d3.json("miserables.json", function(error, graph) {
       .on("tick", ticked);
 
   simulation.force("link")
-      .links(graph.links);
+      .links(graph.links)
+	  .distance(link_length)
 
   function ticked() {
     link
@@ -90,18 +84,24 @@ d3.json("miserables.json", function(error, graph) {
 });
 
 function dragstarted(d) {
+	console.log("drag event")
   if (!d3.event.active) simulation.alphaTarget(0.3).restart();
   d.fx = d.x;
   d.fy = d.y;
 }
 
 function dragged(d) {
+	console.log("drag event")
   d.fx = d3.event.x;
   d.fy = d3.event.y;
 }
 
 function dragended(d) {
+	console.log("drag event")
   if (!d3.event.active) simulation.alphaTarget(0);
   d.fx = null;
   d.fy = null;
 }
+
+
+//d3.select('svg').call(zoom)
