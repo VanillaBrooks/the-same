@@ -1,0 +1,1 @@
+{"nodes": [{"id": "Brooks", "group": 0}, {"id": "Megan", "group": 0}, {"id": "Arunava", "group": 0}], "links": [{"source": "Brooks", "target": "Megan", "value": 6}, {"source": "Arunava", "target": "Brooks", "value": 3}]}
