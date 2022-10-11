@@ -3,7 +3,7 @@ var svg = d3.select("svg")
 const width = window.innerWidth
 const height = window.innerHeight
 
-const link_length = 50
+const link_length = 100
 
 var color = d3.scaleOrdinal(d3.schemeCategory20);
 
